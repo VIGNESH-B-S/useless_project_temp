@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>KUTHIVARA Meter — Measure Every Stroke</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/frontend/style.css">
+</head>
+<body>
+  <div class="squiggle-field" aria-hidden="true"><svg class="squiggle-svg" viewBox="0 0 1200 320" preserveAspectRatio="none"><path d="M-20 160 C120 35 225 300 360 140 S600 40 725 180 S950 305 1220 70" fill="none" stroke="#5b7fff" stroke-width="3"/></svg></div>
+  <main class="page">
+    <section id="uploadScreen" class="screen">
+      <header class="hero">
+        <p class="eyebrow">COMPUTER VISION MEASUREMENT</p>
+        <h1 class="wordmark">KUTHIVARA Meter</h1>
+        <p class="subtitle">Measure every stroke.</p>
+        <p class="explainer">Upload a fixed-camera scribble video. We calibrate the paper, track pen movement, and estimate ink use from your chosen calibration rate.</p>
+      </header>
+      <section class="card">
+        <div class="section-title"><span>01</span><h2>Set up the measurement</h2></div>
+        <div class="config-grid">
+          <label>Paper<select id="paperType"><option value="A4">A4 — 210 × 297 mm</option><option value="CUSTOM">Custom paper</option></select></label>
+          <div id="customPaperFields" class="custom-fields hidden"><label>Width (mm)<input id="widthMm" type="number" min="1" step="0.1" placeholder="210"></label><label>Height (mm)<input id="heightMm" type="number" min="1" step="0.1" placeholder="297"></label></div>
+          <label>Pen brand<input id="penBrand" type="text" placeholder="Optional"></label>
+          <label>Tip size (mm)<input id="tipSizeMm" type="number" min="0.1" step="0.1" placeholder="0.7"></label>
+          <label class="wide">Ink rate (mL per metre)<input id="inkRate" type="number" min="0.000001" step="0.000001" value="0.0005" required></label>
+        </div>
+        <p class="calibration-note">Using your supplied calibration: 0.000005 mL/cm = 0.0005 mL/m. Ink volume is an estimate, not a direct measurement of liquid ink.</p>
+      </section>
+      <section class="card upload-card">
+        <div class="section-title"><span>02</span><h2>Upload your scribble</h2></div>
+        <div id="dropzone" class="dropzone" role="button" tabindex="0" aria-label="Choose a video file">
+          <input id="fileInput" type="file" accept="video/mp4,video/quicktime,video/x-msvideo,video/x-matroska" hidden>
+          <svg class="dropzone-border" viewBox="0 0 540 240" preserveAspectRatio="none" aria-hidden="true"><rect x="2" y="2" width="536" height="236" rx="17" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="7 8"/></svg>
+          <div id="dropzoneEmpty" class="dropzone-content"><div class="dropzone-icon">↑</div><p class="dropzone-text">Drop the video here</p><p class="dropzone-hint">or click to browse · MP4, MOV, AVI, MKV</p></div>
+          <div id="dropzonePreview" class="dropzone-content hidden"><video id="videoPreview" class="video-preview" controls muted playsinline></video><div class="file-meta"><span id="fileName" class="file-name"></span><span id="fileDuration"></span></div><button id="removeVideoBtn" class="text-btn" type="button">Remove video</button></div>
+        </div>
+        <button id="measureBtn" class="primary-btn" type="button" disabled>Measure my strokes →</button>
+        <div id="uploadError" class="error-banner hidden"><p id="uploadErrorText"></p></div>
+        <p class="footnote">Keep the complete white paper in frame. This MVP is tuned for a visible blue pen.</p>
+      </section>
+    </section>
+    <section id="processingScreen" class="screen hidden" aria-live="polite"><div class="processing-wrap"><svg class="pen-draw" viewBox="0 0 220 240" aria-hidden="true"><path id="penPath" d="M20 190 C40 60 90 60 110 130 S170 220 200 80" fill="none" stroke="#ffd23f" stroke-width="5" stroke-linecap="round"/><circle id="penDot" cx="20" cy="190" r="8" fill="#ff5c87"/></svg><p id="processingMessage" class="processing-message">Finding the paper…</p><p class="processing-hint">This can take a few seconds. Please keep this tab open.</p></div></section>
+    <section id="resultsScreen" class="screen hidden">
+      <header class="hero results-hero"><p class="eyebrow">ANALYSIS COMPLETE</p><h1 class="wordmark">Your kuthivara</h1><p class="subtitle">A measured amount of productive scribbling.</p></header>
+      <section class="results-well">
+        <p class="result-label">APPROXIMATE SCRIBBLE LENGTH</p><p class="result-main"><span id="resultDistance">—</span><span id="resultDistanceUnit" class="result-unit">cm</span></p>
+        <p class="result-label result-label-secondary">ESTIMATED INK VOLUME</p><p class="result-secondary"><span id="resultInk">—</span><span id="resultInkUnit" class="result-unit-small">mL</span></p>
+        <p id="resultJoke" class="joke-line"></p><dl id="resultDetails" class="result-details"></dl>
+        <img id="trajectoryImage" class="trajectory-image hidden" alt="Detected pen trajectory on perspective-corrected paper">
+        <p class="result-disclaimer">Estimated Ink Volume uses your supplied pen-deposition rate and the tracked motion length. It is not a direct camera measurement of liquid ink.</p>
+        <button id="resetBtn" class="primary-btn secondary-variant" type="button">Measure another scribble</button>
+      </section>
+    </section>
+    <section id="fatalErrorScreen" class="screen hidden"><header class="hero"><h1 class="wordmark">Oops.</h1><p class="subtitle">We could not complete that measurement.</p></header><div class="card error-well"><p id="fatalErrorText" class="fatal-error-text"></p><button id="tryAgainBtn" class="primary-btn" type="button">Try another video</button></div></section>
+  </main>
+  <script src="/frontend/script.js"></script>
+</body>
+</html>
