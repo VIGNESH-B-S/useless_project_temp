@@ -74,7 +74,6 @@
     ];
     const details = document.querySelector('#resultDetails');
     details.replaceChildren(...values.map(([name, value]) => { const row = document.createElement('div'); const label = document.createElement('dt'); const content = document.createElement('dd'); label.textContent = name; content.textContent = value; row.append(label, content); return row; }));
-    const image = document.querySelector('#trajectoryImage'); image.src = `${data.trajectory_image_url}?v=${Date.now()}`; image.classList.remove('hidden');
     show(resultsScreen);
   }
 
