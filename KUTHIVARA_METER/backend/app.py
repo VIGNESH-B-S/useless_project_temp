@@ -32,6 +32,10 @@ UPLOAD_DIR.mkdir(exist_ok=True)
 RESULTS_DIR.mkdir(parents=True, exist_ok=True)
 
 app = Flask(__name__, static_folder="static")
+@app.after_request
+def add_cors_headers(response):
+    response.headers["Access-Control-Allow-Origin"] = "*"
+    return response
 app.config["MAX_CONTENT_LENGTH"] = 300 * 1024 * 1024  # 300 MB
 
 

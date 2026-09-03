@@ -13,6 +13,7 @@
   let selectedFile = null;
   let objectUrl = null;
   let messageTimer = null;
+  const API_BASE_URL = (window.KUTHIVARA_API_URL || '').replace(/\/$/, '');
 
   const show = screen => [uploadScreen, processingScreen, resultsScreen, fatalErrorScreen].forEach(item => item.classList.toggle('hidden', item !== screen));
   const showError = text => { errorText.textContent = text; errorBanner.classList.remove('hidden'); };
@@ -92,7 +93,7 @@
     formData.append('pen_color', 'Blue');
     formData.append('ink_rate_ml_per_m', document.querySelector('#inkRate').value);
     try {
-      const response = await fetch('/api/analyze', { method: 'POST', body: formData });
+      const response = await fetch(`${API_BASE_URL}/api/analyze`, { method: 'POST', body: formData });
       const data = await response.json();
       if (!response.ok || !data.success) throw new Error(data.error || 'Analysis failed.');
       showResults(data);
