@@ -2,23 +2,23 @@
 
 
 
-# [Project Name] 🎯
+# Kuthivara_Meter🎯
 
 
-## Basic Details
-### Team Name: [Name]
+## Simple open-cv based software that tracks random scribbling in a paper
+### Team Name: Brains
 
 
 ### Team Members
-- Team Lead: [Name] - [College]
-- Member 2: [Name] - [College]
-- Member 3: [Name] - [College]
+- Team Lead: Vignesh BS - Model Engineering College
+- Member 2: Navaneeth J Menon- Model Engineering College
+
 
 ### Project Description
-[2-3 lines about what your project does]
+Open-cv based software that tracks the amount of ink used while scribbling
 
 ### The Problem (that doesn't exist)
-[What ridiculous problem are you solving?]
+How much ink do you waste while scribbling.
 
 ### The Solution (that nobody asked for)
 [How are you solving it? Keep it fun!]
@@ -26,72 +26,106 @@
 ## Technical Details
 ### Technologies/Components Used
 For Software:
-- [Languages used]
-- [Frameworks used]
-- [Libraries used]
-- [Tools used]
+- Python
+- Open-cv
+- Html
+- Css
+-Javascript
 
-For Hardware:
-- [List main components]
-- [List specifications]
-- [List tools required]
 
-### Implementation
-For Software:
-# Installation
-[commands]
+json
+{
+  "success": true,
+  "scribble_length_mm": 389.61,
+  "scribble_length_cm": 38.96,
+  "scribble_length_m": 0.39,
+  "estimated_ink_ml": 0.0001948,
+  "estimated_ink_microlitres": 0.1948,
+  "confidence": 0.92
+}
 
-# Run
-[commands]
 
-### Project Documentation
-For Software:
+### GET /health
+
+Deployment health check:
+
+json
+{
+  "service": "KUTHIVARA Meter API",
+  "status": "ok"
+}
+
+
+## Deployment
+
+### Railway — Flask/OpenCV backend
+
+1. Push the repository to GitHub.
+2. Create a Railway project from the repository.
+3. Set Railway *Root Directory* to:
+
+text
+/KUTHIVARA_METER/backend
+
+
+4. Railway uses railway.json to run:
+
+text
+gunicorn --bind 0.0.0.0:$PORT app:app
+
+
+5. Generate a public Railway domain.
+6. Confirm:
+
+text
+https://YOUR-RAILWAY-DOMAIN/health
+
+
+### Vercel — static frontend
+
+1. Import the same GitHub repository into Vercel.
+2. Set *Root Directory* to:
+
+text
+KUTHIVARA_METER
+
+
+3. Choose framework preset *Other*.
+4. Leave Build Command and Output Directory empty.
+5. In frontend/config.js, set:
+
+js
+window.KUTHIVARA_API_URL = "https://YOUR-RAILWAY-DOMAIN";
+
+
+6. Commit and push config.js; Vercel will redeploy.
+
+No Vercel environment variable is required in the current MVP because the public Railway URL is held in frontend/config.js.
 
 # Screenshots (Add at least 3)
-![Screenshot1](Add screenshot 1 here with proper name)
-*Add caption explaining what this shows*
+<img width="1902" height="952" alt="image" src="https://github.com/user-attachments/assets/f280b708-3478-415d-8f40-0daf2501cb81" />
 
-![Screenshot2](Add screenshot 2 here with proper name)
-*Add caption explaining what this shows*
 
-![Screenshot3](Add screenshot 3 here with proper name)
-*Add caption explaining what this shows*
+<img width="1917" height="972" alt="image" src="https://github.com/user-attachments/assets/6791e1bb-bd97-4c48-85ae-bf19de2234c9" />
 
-# Diagrams
-![Workflow](Add your workflow/architecture diagram here)
-*Add caption explaining your workflow*
 
-For Hardware:
+![Uploading image.png…]()
 
-# Schematic & Circuit
-![Circuit](Add your circuit diagram here)
-*Add caption explaining connections*
 
-![Schematic](Add your schematic diagram here)
-*Add caption explaining the schematic*
 
-# Build Photos
-![Components](Add photo of your components here)
-*List out all components shown*
 
-![Build](Add photos of build process here)
-*Explain the build steps*
-
-![Final](Add photo of final product here)
-*Explain the final build*
 
 ### Project Demo
 # Video
-[Add your demo video link here]
-*Explain what the video demonstrates*
 
-# Additional Demos
-[Add any extra demo materials/links]
 
-## Team Contributions
-- [Name 1]: [Specific contributions]
-- [Name 2]: [Specific contributions]
-- [Name 3]: [Specific contributions]
+
+https://github.com/user-attachments/assets/b1ced352-3f17-457d-b5b0-00a3959915ee
+
+
+
+
+  
 
 ---
 Made with ❤️ at TinkerHub Useless Projects 
