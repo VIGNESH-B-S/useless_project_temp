@@ -20,11 +20,8 @@ import os
 import cv2
 
 from vision.video_processor import VideoProcessor
-from vision.paper_detector import (
-    find_calibration_frame,
-    warp_paper,
-    draw_corners,
-)
+from vision.calibration import calibrate_video
+from vision.paper_detector import draw_corners
 
 OUTPUT_DIR = "debug_output"
 
@@ -53,10 +50,19 @@ def main():
         print(f"  {k}: {v}")
 
     print("\nSearching for the paper (scanning first ~3 seconds for the clearest view)...")
-    cal_idx, cal_frame, corners = find_calibration_frame(vp, search_seconds=3.0)
+    try:
+        calibration = calibrate_video(vp, paper=args.paper, px_per_mm=args.px_per_mm,
+                                      search_seconds=3.0, width_mm=width_mm, height_mm=height_mm)
+    except RuntimeError as error:
+        print(f"FAILED: {error}")
+        vp.release()
+        return
 
-    if corners is None:
-        print("FAILED: Could not detect a rectangular paper in this video.")
+    cal_idx = calibration.frame_index
+    corners = calibration.corners
+    cal_frame = vp.get_frame(cal_idx)
+    if cal_frame is None:
+        print("FAILED: Could not re-read the calibration frame.")
         vp.release()
         return
 
@@ -72,12 +78,16 @@ def main():
     print(f"\nSaved boundary overlay -> {boundary_path}")
 
     # Perspective-correct that frame to real-world scale.
-    warped, matrix, px_per_mm = warp_paper(cal_frame, corners, width_mm, height_mm, args.px_per_mm)
+    warped = calibration.warp(cal_frame)
+    px_per_mm = calibration.px_per_mm
     warped_path = os.path.join(OUTPUT_DIR, "warped_paper.png")
     cv2.imwrite(warped_path, warped)
     print(f"Saved perspective-corrected paper -> {warped_path}")
     print(f"Scale: {px_per_mm} px/mm  ->  warped size: {warped.shape[1]}x{warped.shape[0]} px "
           f"for a {width_mm:.0f}x{height_mm:.0f} mm sheet")
+    calibration_path = os.path.join(OUTPUT_DIR, "paper_calibration.json")
+    calibration.save_json(calibration_path)
+    print(f"Saved calibration values -> {calibration_path}")
 
     # Since the camera is fixed for the whole video, reuse these same
     # corners on every frame and render an annotated preview video.

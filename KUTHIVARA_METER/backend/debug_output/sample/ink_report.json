@@ -1,0 +1,13 @@
+{
+  "frames": 309,
+  "pen_detected_frames": 126,
+  "accepted_track_points": 112,
+  "detection_coverage": 0.4077669902912621,
+  "segments": 107,
+  "length_mm": 330.0415450036526,
+  "paper_calibration_frame": 0,
+  "ink_rate_ml_per_cm": 5e-06,
+  "estimated_ink_ml": 0.0001650207725018263,
+  "estimated_ink_microlitres": 0.1650207725018263,
+  "note": "Estimate uses trajectory length and the configured fixed pen rate."
+}
