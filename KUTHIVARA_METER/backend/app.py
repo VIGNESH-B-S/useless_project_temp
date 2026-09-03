@@ -137,6 +137,12 @@ def index():
     return send_from_directory(FRONTEND_DIR, "index.html")
 
 
+@app.get("/health")
+def health():
+    """Simple deployment check that does not depend on frontend files."""
+    return jsonify(status="ok", service="KUTHIVARA Meter API")
+
+
 @app.get("/frontend/<path:filename>")
 def frontend_file(filename: str):
     return send_from_directory(FRONTEND_DIR, filename)
