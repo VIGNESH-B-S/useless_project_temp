@@ -15,7 +15,7 @@
 
 
 ### Project Description
-Open-cv based software that tracks the amount of ink used while scribbling
+Open-cv based software that tracks the amount of ink used while scribbling and approximate length of scribble 
 
 ### The Problem (that doesn't exist)
 How much ink do you waste while scribbling.
